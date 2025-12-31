@@ -1,0 +1,204 @@
+{% extends 'shoplio_app/base.html' %}
+{% load static %}
+
+{% block title %}Affiliate Registration - SHOPLIO{% endblock %}
+
+{% block content %}
+<div style="min-height: 100vh; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 4rem 0;">
+    <div class="container" style="max-width: 600px;">
+        <div style="background: white; border-radius: 16px; padding: 3rem; box-shadow: 0 20px 60px rgba(0,0,0,0.3);">
+
+            <!-- Header -->
+            <div style="text-align: center; margin-bottom: 2rem;">
+                <h1 style="font-size: 2rem; font-weight: 800; color: #1F2937; margin-bottom: 0.5rem;">
+                    Join Our Affiliate Program
+                </h1>
+                <p style="color: #6B7280; font-size: 1rem;">
+                    Start earning commissions by promoting our products
+                </p>
+            </div>
+
+            <!-- Messages -->
+            {% if messages %}
+            {% for message in messages %}
+            <div style="padding: 1rem; background: {% if message.tags == 'error' %}#FEE2E2{% elif message.tags == 'success' %}#D1FAE5{% else %}#FEF3C7{% endif %}; 
+                           color: {% if message.tags == 'error' %}#991B1B{% elif message.tags == 'success' %}#065F46{% else %}#92400E{% endif %}; 
+                           border-radius: 8px; margin-bottom: 1.5rem; font-size: 0.9rem;">
+                {{ message }}
+            </div>
+            {% endfor %}
+            {% endif %}
+
+            <!-- Registration Form -->
+            <form method="post" style="display: flex; flex-direction: column; gap: 1.25rem;">
+                {% csrf_token %}
+
+                <!-- Username -->
+                <div>
+                    <label
+                        style="display: block; font-weight: 600; color: #374151; margin-bottom: 0.5rem; font-size: 0.9rem;">
+                        Username *
+                    </label>
+                    {{ form.username }}
+                    {% if form.username.errors %}
+                    <p style="color: #DC2626; font-size: 0.85rem; margin-top: 0.25rem;">{{ form.username.errors.0 }}</p>
+                    {% endif %}
+                </div>
+
+                <!-- Full Name -->
+                <div>
+                    <label
+                        style="display: block; font-weight: 600; color: #374151; margin-bottom: 0.5rem; font-size: 0.9rem;">
+                        Full Name *
+                    </label>
+                    {{ form.full_name }}
+                    {% if form.full_name.errors %}
+                    <p style="color: #DC2626; font-size: 0.85rem; margin-top: 0.25rem;">{{ form.full_name.errors.0 }}
+                    </p>
+                    {% endif %}
+                </div>
+
+                <!-- Email -->
+                <div>
+                    <label
+                        style="display: block; font-weight: 600; color: #374151; margin-bottom: 0.5rem; font-size: 0.9rem;">
+                        Email Address *
+                    </label>
+                    {{ form.email }}
+                    {% if form.email.errors %}
+                    <p style="color: #DC2626; font-size: 0.85rem; margin-top: 0.25rem;">{{ form.email.errors.0 }}</p>
+                    {% endif %}
+                </div>
+
+                <!-- Phone -->
+                <div>
+                    <label
+                        style="display: block; font-weight: 600; color: #374151; margin-bottom: 0.5rem; font-size: 0.9rem;">
+                        Phone Number
+                    </label>
+                    {{ form.phone }}
+                    {% if form.phone.errors %}
+                    <p style="color: #DC2626; font-size: 0.85rem; margin-top: 0.25rem;">{{ form.phone.errors.0 }}</p>
+                    {% endif %}
+                </div>
+
+                <!-- Password -->
+                <div>
+                    <label
+                        style="display: block; font-weight: 600; color: #374151; margin-bottom: 0.5rem; font-size: 0.9rem;">
+                        Password *
+                    </label>
+                    {{ form.password1 }}
+                    {% if form.password1.errors %}
+                    <p style="color: #DC2626; font-size: 0.85rem; margin-top: 0.25rem;">{{ form.password1.errors.0 }}
+                    </p>
+                    {% endif %}
+                </div>
+
+                <!-- Confirm Password -->
+                <div>
+                    <label
+                        style="display: block; font-weight: 600; color: #374151; margin-bottom: 0.5rem; font-size: 0.9rem;">
+                        Confirm Password *
+                    </label>
+                    {{ form.password2 }}
+                    {% if form.password2.errors %}
+                    <p style="color: #DC2626; font-size: 0.85rem; margin-top: 0.25rem;">{{ form.password2.errors.0 }}
+                    </p>
+                    {% endif %}
+                </div>
+
+                <!-- Payment Method -->
+                <div>
+                    <label
+                        style="display: block; font-weight: 600; color: #374151; margin-bottom: 0.5rem; font-size: 0.9rem;">
+                        Payment Method *
+                    </label>
+                    {{ form.payment_method }}
+                    {% if form.payment_method.errors %}
+                    <p style="color: #DC2626; font-size: 0.85rem; margin-top: 0.25rem;">{{ form.payment_method.errors.0
+                        }}</p>
+                    {% endif %}
+                </div>
+
+                <!-- Payment Details -->
+                <div>
+                    <label
+                        style="display: block; font-weight: 600; color: #374151; margin-bottom: 0.5rem; font-size: 0.9rem;">
+                        Payment Details *
+                    </label>
+                    {{ form.payment_details }}
+                    <p style="color: #6B7280; font-size: 0.8rem; margin-top: 0.25rem;">
+                        Enter your bank account, PayPal email, or mobile wallet number
+                    </p>
+                    {% if form.payment_details.errors %}
+                    <p style="color: #DC2626; font-size: 0.85rem; margin-top: 0.25rem;">{{ form.payment_details.errors.0
+                        }}</p>
+                    {% endif %}
+                </div>
+
+                <!-- Terms -->
+                <div style="display: flex; align-items: start; gap: 0.5rem;">
+                    {{ form.agree_terms }}
+                    <label for="id_agree_terms" style="color: #374151; font-size: 0.9rem; cursor: pointer;">
+                        I agree to the affiliate terms and conditions
+                    </label>
+                </div>
+                {% if form.agree_terms.errors %}
+                <p style="color: #DC2626; font-size: 0.85rem; margin-top: -0.75rem;">{{ form.agree_terms.errors.0 }}</p>
+                {% endif %}
+
+                <!-- Submit Button -->
+                <button type="submit" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); 
+                                              color: white; padding: 1rem; border: none; border-radius: 8px; 
+                                              font-weight: 700; font-size: 1rem; cursor: pointer; 
+                                              transition: transform 0.2s, box-shadow 0.2s; margin-top: 0.5rem;"
+                    onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 10px 25px rgba(102, 126, 234, 0.4)';"
+                    onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='none';">
+                    Create Affiliate Account
+                </button>
+            </form>
+
+            <!-- Login Link -->
+            <div style="text-align: center; margin-top: 2rem; padding-top: 2rem; border-top: 1px solid #E5E7EB;">
+                <p style="color: #6B7280; font-size: 0.9rem;">
+                    Already have an account?
+                    <a href="{% url 'shoplio_app:affiliate_login' %}"
+                        style="color: #667eea; font-weight: 600; text-decoration: none;">
+                        Login here
+                    </a>
+                </p>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<style>
+    .form-input,
+    .form-select,
+    .form-textarea {
+        width: 100%;
+        padding: 0.75rem;
+        border: 2px solid #E5E7EB;
+        border-radius: 8px;
+        font-size: 0.95rem;
+        transition: border-color 0.2s;
+        font-family: 'Inter', sans-serif;
+    }
+
+    .form-input:focus,
+    .form-select:focus,
+    .form-textarea:focus {
+        outline: none;
+        border-color: #667eea;
+    }
+
+    input[type="checkbox"] {
+        width: 18px;
+        height: 18px;
+        cursor: pointer;
+        margin-top: 0.25rem;
+    }
+</style>
+{% endblock %}

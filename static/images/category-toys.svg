@@ -1,0 +1,16 @@
+<svg width="80" height="80" viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="toysGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#f59e0b;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#d97706;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  <!-- Game Controller -->
+  <rect x="20" y="30" width="40" height="25" rx="5" fill="url(#toysGradient)" stroke="#d97706" stroke-width="1.5"/>
+  <circle cx="30" cy="42" r="3" fill="#fbbf24"/>
+  <circle cx="50" cy="42" r="3" fill="#fbbf24"/>
+  <rect x="35" y="48" width="10" height="4" rx="2" fill="#fbbf24"/>
+  <rect x="25" y="35" width="8" height="3" rx="1" fill="#fbbf24"/>
+  <rect x="47" y="35" width="8" height="3" rx="1" fill="#fbbf24"/>
+</svg>
+

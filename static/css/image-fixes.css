@@ -1,0 +1,87 @@
+/* Image Display Fixes - Ensure All Images Display Properly */
+img {
+    display: block;
+    max-width: 100%;
+    height: auto;
+    border: none;
+    outline: none;
+}
+
+/* Hero Images */
+.hero-image-item img {
+    display: block !important;
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: cover !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+}
+
+/* Showcase Images */
+.showcase-item img {
+    display: block !important;
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: cover !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+}
+
+/* Happy Shopping Images */
+.happy-shopping-item img {
+    display: block !important;
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: cover !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+}
+
+/* Product Images */
+.product-image {
+    display: block !important;
+    width: 100% !important;
+    height: 200px !important;
+    object-fit: cover !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+}
+
+/* Category Icons */
+.category-icon-img {
+    display: block !important;
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: contain !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+}
+
+/* Section Images */
+.section-image {
+    display: block !important;
+    width: 100% !important;
+    height: auto !important;
+    object-fit: cover !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+}
+
+/* Ensure images don't break layout */
+img[src=""],
+img:not([src]) {
+    display: none !important;
+}
+
+/* Fallback for broken images */
+img[onerror] {
+    min-height: 200px;
+    background: linear-gradient(135deg, #f3f4f6 0%, #e5e7eb 100%);
+}
+
+/* Loading state */
+img[loading="lazy"] {
+    opacity: 1;
+    transition: opacity 0.3s;
+}
+

@@ -1,0 +1,41 @@
+{% extends 'shoplio_app/base.html' %}
+{% load humanize %}
+
+{% block title %}Order Confirmed{% endblock %}
+
+{% block content %}
+<div class="container"
+    style="min-height: 60vh; display: flex; align-items: center; justify-content: center; padding: 4rem 1rem;">
+    <div
+        style="background: white; padding: 3rem; border-radius: 16px; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); max-width: 600px; width: 100%; text-align: center;">
+
+        <div
+            style="width: 80px; height: 80px; background: #D1FAE5; color: #059669; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 1.5rem auto;">
+            <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="20 6 9 17 4 12"></polyline>
+            </svg>
+        </div>
+
+        <h1 style="color: #1F2937; margin-bottom: 0.5rem; font-size: 1.8rem; font-weight: 800;">Thank You for Your
+            Order!</h1>
+        <p style="color: #6B7280; margin-bottom: 2rem;">Your order has been placed successfully and is being processed.
+        </p>
+
+        <div
+            style="background: #F3F4F6; padding: 1.5rem; border-radius: 8px; border: 1px dashed #D1D5DB; margin-bottom: 2rem;">
+            <div style="font-size: 0.9rem; color: #6B7280; margin-bottom: 0.25rem;">Order Reference ID</div>
+            <div
+                style="font-family: monospace; font-size: 1.5rem; font-weight: 700; color: #374151; letter-spacing: 1px;">
+                {{ order.order_id }}</div>
+        </div>
+
+        <div style="margin-bottom: 2rem; color: #4B5563;">
+            <p>We've sent a confirmation email to <strong style="color: #1F2937;">{{ order.email }}</strong></p>
+        </div>
+
+        <a href="{% url 'shoplio_app:home' %}" class="btn btn-primary"
+            style="padding: 1rem 2rem; width: 100%; border-radius: 8px; font-size: 1.1rem;">Continue Shopping</a>
+    </div>
+</div>
+{% endblock %}

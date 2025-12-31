@@ -1,0 +1,203 @@
+{% extends 'shoplio_app/base.html' %}
+{% load static %}
+{% load humanize %}
+
+{% block title %}SHOPLIO - Best Online Shopping in Pakistan{% endblock %}
+
+{% block extra_css %}
+<style>
+    /* Slider Custom Styles to override/enhance base CSS if needed */
+    .hero-carousel .banner-slide {
+        display: none;
+        width: 100%;
+        height: 380px;
+        /* Optimal height for desktop */
+    }
+
+    .hero-carousel .banner-slide.active {
+        display: block;
+        animation: fadeEffect 1s;
+    }
+
+    .hero-carousel img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    @keyframes fadeEffect {
+        from {
+            opacity: 0.6;
+        }
+
+        to {
+            opacity: 1;
+        }
+    }
+
+    /* Dots */
+    .carousel-indicators {
+        position: absolute;
+        bottom: 15px;
+        left: 50%;
+        transform: translateX(-50%);
+        display: flex;
+        gap: 8px;
+        z-index: 2;
+    }
+
+    .indicator {
+        width: 10px;
+        height: 10px;
+        background: rgba(255, 255, 255, 0.5);
+        border-radius: 50%;
+        cursor: pointer;
+        transition: background 0.3s;
+    }
+
+    .indicator.active {
+        background: #fff;
+        transform: scale(1.2);
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container">
+
+    <!-- Hero Banner Carousel -->
+    <div class="hero-carousel" style="margin-bottom: 2rem;">
+        {% if banners %}
+        {% for banner in banners %}
+        <div class="banner-slide {% if forloop.first %}active{% endif %}">
+            {% if banner.image %}
+            <img src="{{ banner.image.url }}" alt="{{ banner.title }}">
+            {% else %}
+            <div
+                style="width:100%; height:100%; background:#ddd; display:flex; align-items:center; justify-content:center;">
+                No Image</div>
+            {% endif %}
+        </div>
+        {% endfor %}
+        <div class="carousel-indicators">
+            {% for banner in banners %}
+            <div class="indicator {% if forloop.first %}active{% endif %}" onclick="showSlide({{ forloop.counter0 }})">
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+        <!-- Placeholder if no banners -->
+        <div class="banner-slide active">
+            <img src="https://images.unsplash.com/photo-1607082348824-0a96f2a4b9da?auto=format&fit=crop&w=1280&h=400&q=80"
+                alt="Welcome to Shoplio">
+        </div>
+        {% endif %}
+    </div>
+
+    <!-- Category Section (Daraz Style Icons) -->
+    <div class="category-section">
+        <h3 class="section-title">Categories</h3>
+        <div class="category-scroll">
+            {% for category in categories %}
+            <a href="{% url 'shoplio_app:category_detail' category.slug %}" class="cat-item">
+                <div class="cat-icon">
+                    {% if category.image %}
+                    <img src="{{ category.image.url }}" alt="{{ category.name }}">
+                    {% else %}
+                    <span>{{ category.icon }}</span>
+                    {% endif %}
+                </div>
+                <div class="cat-name">{{ category.name }}</div>
+            </a>
+            {% endfor %}
+        </div>
+    </div>
+
+    <!-- Flash Sale / Featured -->
+    <div class="section-header">
+        <h2 class="section-title">Flash Sale</h2>
+        <a href="{% url 'shoplio_app:product_list' %}" class="see-more">Shop All Products &rarr;</a>
+    </div>
+
+    <div class="products-grid">
+        {% for product in featured_products %}
+        <a href="{% url 'shoplio_app:product_detail' product.slug %}" class="product-card">
+            <div class="product-img-wrapper">
+                {% if product.image %}
+                <img src="{{ product.image.url }}" alt="{{ product.name }}" class="product-img">
+                {% else %}
+                <img src="{% static 'images/placeholder.svg' %}" alt="No image" class="product-img">
+                {% endif %}
+            </div>
+            <div class="product-details">
+                <h3 class="product-name">{{ product.name }}</h3>
+                <div class="product-price">PKR {{ product.base_price|intcomma }}</div>
+                <div class="product-meta">
+                    {% if product.average_rating > 0 %}
+                    <span class="rating-star">★</span> {{ product.average_rating|floatformat:1 }}
+                    {% else %}
+                    <span class="text-muted">No ratings</span>
+                    {% endif %}
+                    <span>({{ product.review_count }})</span>
+                </div>
+            </div>
+        </a>
+        {% endfor %}
+    </div>
+
+    <!-- Just For You -->
+    <div class="section-header" style="margin-top: 3rem;">
+        <h2 class="section-title">Just For You</h2>
+    </div>
+
+    <div class="products-grid">
+        {% for product in recent_products %}
+        <a href="{% url 'shoplio_app:product_detail' product.slug %}" class="product-card">
+            <div class="product-img-wrapper">
+                {% if product.image %}
+                <img src="{{ product.image.url }}" alt="{{ product.name }}" class="product-img">
+                {% else %}
+                <img src="{% static 'images/placeholder.svg' %}" alt="No image" class="product-img">
+                {% endif %}
+            </div>
+            <div class="product-details">
+                <h3 class="product-name">{{ product.name }}</h3>
+                <div class="product-price">PKR {{ product.base_price|intcomma }}</div>
+                <div class="product-meta">
+                    <span style="font-size: 0.8rem; color: #999;">New Arrival</span>
+                </div>
+            </div>
+        </a>
+        {% endfor %}
+    </div>
+
+</div>
+
+<script>
+    // Carousel Logic
+    let slideIndex = 0;
+    const slides = document.querySelectorAll(".banner-slide");
+    const dots = document.querySelectorAll(".indicator");
+
+    function showSlide(n) {
+        if (!slides.length) return;
+
+        slides.forEach(slide => slide.classList.remove("active"));
+        dots.forEach(dot => dot.classList.remove("active"));
+
+        slideIndex = n;
+        if (slideIndex >= slides.length) slideIndex = 0;
+        if (slideIndex < 0) slideIndex = slides.length - 1;
+
+        slides[slideIndex].classList.add("active");
+        if (dots[slideIndex]) dots[slideIndex].classList.add("active");
+    }
+
+    // Auto Advance
+    if (slides.length > 1) {
+        setInterval(() => {
+            showSlide(slideIndex + 1);
+        }, 5000);
+    }
+</script>
+{% endblock %}

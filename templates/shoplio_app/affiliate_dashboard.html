@@ -1,0 +1,245 @@
+{% extends 'shoplio_app/base.html' %}
+{% load static %}
+{% load humanize %}
+
+{% block title %}Affiliate Dashboard - SHOPLIO{% endblock %}
+
+{% block content %}
+<div style="background: #F9FAFB; min-height: 100vh; padding: 2rem 0;">
+    <div class="container">
+
+        <!-- Header -->
+        <div
+            style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 16px; padding: 2.5rem; margin-bottom: 2rem; color: white;">
+            <h1 style="font-size: 2rem; font-weight: 800; margin-bottom: 0.5rem;">
+                Welcome back, {{ affiliate.full_name }}!
+            </h1>
+            <p style="font-size: 1.1rem; opacity: 0.9;">
+                Affiliate Code: <strong
+                    style="background: rgba(255,255,255,0.2); padding: 0.25rem 0.75rem; border-radius: 6px; font-family: monospace;">{{ affiliate.affiliate_code }}</strong>
+            </p>
+            {% if not affiliate.is_approved %}
+            <div style="background: #FEF3C7; color: #92400E; padding: 1rem; border-radius: 8px; margin-top: 1rem;">
+                ⏳ Your account is pending admin approval. You'll be able to start earning once approved.
+            </div>
+            {% endif %}
+        </div>
+
+        <!-- Stats Cards -->
+        <div
+            style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem; margin-bottom: 2rem;">
+
+            <!-- Total Earnings -->
+            <div
+                style="background: white; border-radius: 12px; padding: 1.5rem; box-shadow: 0 2px 8px rgba(0,0,0,0.05);">
+                <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 0.5rem;">
+                    <h3 style="font-size: 0.9rem; color: #6B7280; font-weight: 600;">Total Earnings</h3>
+                    <span style="font-size: 1.5rem;">💰</span>
+                </div>
+                <p style="font-size: 2rem; font-weight: 800; color: #1F2937; margin: 0;">
+                    PKR {{ affiliate.total_earnings|floatformat:0|intcomma }}
+                </p>
+                <p style="font-size: 0.85rem; color: #10B981; margin-top: 0.5rem;">
+                    Pending: PKR {{ affiliate.pending_earnings|floatformat:0|intcomma }}
+                </p>
+            </div>
+
+            <!-- This Month -->
+            <div
+                style="background: white; border-radius: 12px; padding: 1.5rem; box-shadow: 0 2px 8px rgba(0,0,0,0.05);">
+                <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 0.5rem;">
+                    <h3 style="font-size: 0.9rem; color: #6B7280; font-weight: 600;">This Month</h3>
+                    <span style="font-size: 1.5rem;">📅</span>
+                </div>
+                <p style="font-size: 2rem; font-weight: 800; color: #1F2937; margin: 0;">
+                    PKR {{ month_earnings|floatformat:0|intcomma }}
+                </p>
+                <p style="font-size: 0.85rem; color: #6B7280; margin-top: 0.5rem;">
+                    {{ month_sales }} sales
+                </p>
+            </div>
+
+            <!-- Total Clicks -->
+            <div
+                style="background: white; border-radius: 12px; padding: 1.5rem; box-shadow: 0 2px 8px rgba(0,0,0,0.05);">
+                <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 0.5rem;">
+                    <h3 style="font-size: 0.9rem; color: #6B7280; font-weight: 600;">Total Clicks</h3>
+                    <span style="font-size: 1.5rem;">👆</span>
+                </div>
+                <p style="font-size: 2rem; font-weight: 800; color: #1F2937; margin: 0;">
+                    {{ affiliate.total_clicks|intcomma }}
+                </p>
+                <p style="font-size: 0.85rem; color: #6B7280; margin-top: 0.5rem;">
+                    This month: {{ month_clicks }}
+                </p>
+            </div>
+
+            <!-- Conversion Rate -->
+            <div
+                style="background: white; border-radius: 12px; padding: 1.5rem; box-shadow: 0 2px 8px rgba(0,0,0,0.05);">
+                <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 0.5rem;">
+                    <h3 style="font-size: 0.9rem; color: #6B7280; font-weight: 600;">Conversion Rate</h3>
+                    <span style="font-size: 1.5rem;">📊</span>
+                </div>
+                <p style="font-size: 2rem; font-weight: 800; color: #1F2937; margin: 0;">
+                    {{ affiliate.get_conversion_rate }}%
+                </p>
+                <p style="font-size: 0.85rem; color: #6B7280; margin-top: 0.5rem;">
+                    {{ affiliate.total_sales }} total sales
+                </p>
+            </div>
+
+        </div>
+
+        <!-- Quick Actions -->
+        <div
+            style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem; margin-bottom: 2rem;">
+
+            <a href="{% url 'shoplio_app:affiliate_links' %}"
+                style="background: white; border-radius: 12px; padding: 1.5rem; 
+                                                                     box-shadow: 0 2px 8px rgba(0,0,0,0.05); text-decoration: none; 
+                                                                     transition: transform 0.2s, box-shadow 0.2s; display: block;"
+                onmouseover="this.style.transform='translateY(-4px)'; this.style.boxShadow='0 8px 20px rgba(0,0,0,0.1)';"
+                onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 2px 8px rgba(0,0,0,0.05)';">
+                <div style="display: flex; align-items: center; gap: 1rem;">
+                    <div
+                        style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); width: 50px; height: 50px; 
+                               border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 1.5rem;">
+                        🔗
+                    </div>
+                    <div>
+                        <h3 style="font-size: 1.1rem; font-weight: 700; color: #1F2937; margin: 0;">Generate Links</h3>
+                        <p style="font-size: 0.9rem; color: #6B7280; margin: 0.25rem 0 0 0;">Create affiliate links for
+                            products</p>
+                    </div>
+                </div>
+            </a>
+
+            <a href="{% url 'shoplio_app:affiliate_commissions' %}"
+                style="background: white; border-radius: 12px; padding: 1.5rem; 
+                                                                           box-shadow: 0 2px 8px rgba(0,0,0,0.05); text-decoration: none; 
+                                                                           transition: transform 0.2s, box-shadow 0.2s; display: block;"
+                onmouseover="this.style.transform='translateY(-4px)'; this.style.boxShadow='0 8px 20px rgba(0,0,0,0.1)';"
+                onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 2px 8px rgba(0,0,0,0.05)';">
+                <div style="display: flex; align-items: center; gap: 1rem;">
+                    <div
+                        style="background: linear-gradient(135deg, #10B981 0%, #059669 100%); width: 50px; height: 50px; 
+                               border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 1.5rem;">
+                        💵
+                    </div>
+                    <div>
+                        <h3 style="font-size: 1.1rem; font-weight: 700; color: #1F2937; margin: 0;">View Commissions
+                        </h3>
+                        <p style="font-size: 0.9rem; color: #6B7280; margin: 0.25rem 0 0 0;">Track your earnings history
+                        </p>
+                    </div>
+                </div>
+            </a>
+
+        </div>
+
+        <!-- Recent Commissions -->
+        <div
+            style="background: white; border-radius: 12px; padding: 2rem; box-shadow: 0 2px 8px rgba(0,0,0,0.05); margin-bottom: 2rem;">
+            <h2 style="font-size: 1.5rem; font-weight: 700; color: #1F2937; margin-bottom: 1.5rem;">
+                Recent Commissions
+            </h2>
+
+            {% if recent_commissions %}
+            <div style="overflow-x: auto;">
+                <table style="width: 100%; border-collapse: collapse;">
+                    <thead>
+                        <tr style="border-bottom: 2px solid #E5E7EB;">
+                            <th
+                                style="text-align: left; padding: 0.75rem; font-size: 0.85rem; color: #6B7280; font-weight: 600;">
+                                Product</th>
+                            <th
+                                style="text-align: left; padding: 0.75rem; font-size: 0.85rem; color: #6B7280; font-weight: 600;">
+                                Amount</th>
+                            <th
+                                style="text-align: left; padding: 0.75rem; font-size: 0.85rem; color: #6B7280; font-weight: 600;">
+                                Status</th>
+                            <th
+                                style="text-align: left; padding: 0.75rem; font-size: 0.85rem; color: #6B7280; font-weight: 600;">
+                                Date</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for commission in recent_commissions %}
+                        <tr style="border-bottom: 1px solid #F3F4F6;">
+                            <td style="padding: 1rem 0.75rem; font-size: 0.9rem; color: #1F2937;">{{ commission.product_name|truncatewords:5 }}</td>
+                            <td style="padding: 1rem 0.75rem; font-size: 0.9rem; font-weight: 600; color: #10B981;">PKR
+                                {{ commission.commission_amount|floatformat:0|intcomma }}</td>
+                            <td style="padding: 1rem 0.75rem;">
+                                <span
+                                    style="padding: 0.25rem 0.75rem; border-radius: 12px; font-size: 0.8rem; font-weight: 600;
+                                            background: {% if commission.status == 'paid' %}#D1FAE5; color: #065F46;{% elif commission.status == 'approved' %}#DBEAFE; color: #1E40AF;{% else %}#FEF3C7; color: #92400E;{% endif %}">
+                                    {{ commission.get_status_display }}
+                                </span>
+                            </td>
+                            <td style="padding: 1rem 0.75rem; font-size: 0.85rem; color: #6B7280;">{{ commission.created_at|date:"M d, Y" }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            {% else %}
+            <p style="text-align: center; color: #6B7280; padding: 2rem;">
+                No commissions yet. Start promoting products to earn!
+            </p>
+            {% endif %}
+        </div>
+
+        <!-- Recent Clicks -->
+        <div style="background: white; border-radius: 12px; padding: 2rem; box-shadow: 0 2px 8px rgba(0,0,0,0.05);">
+            <h2 style="font-size: 1.5rem; font-weight: 700; color: #1F2937; margin-bottom: 1.5rem;">
+                Recent Clicks
+            </h2>
+
+            {% if recent_clicks %}
+            <div style="overflow-x: auto;">
+                <table style="width: 100%; border-collapse: collapse;">
+                    <thead>
+                        <tr style="border-bottom: 2px solid #E5E7EB;">
+                            <th
+                                style="text-align: left; padding: 0.75rem; font-size: 0.85rem; color: #6B7280; font-weight: 600;">
+                                Product</th>
+                            <th
+                                style="text-align: left; padding: 0.75rem; font-size: 0.85rem; color: #6B7280; font-weight: 600;">
+                                Converted</th>
+                            <th
+                                style="text-align: left; padding: 0.75rem; font-size: 0.85rem; color: #6B7280; font-weight: 600;">
+                                Date</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for click in recent_clicks %}
+                        <tr style="border-bottom: 1px solid #F3F4F6;">
+                            <td style="padding: 1rem 0.75rem; font-size: 0.9rem; color: #1F2937;">
+                                {% if click.product %}{{ click.product.name|truncatewords:5 }}{% else %}General{% endif %}
+                            </td>
+                            <td style="padding: 1rem 0.75rem;">
+                                {% if click.converted %}
+                                <span style="color: #10B981; font-weight: 600;">✓ Yes</span>
+                                {% else %}
+                                <span style="color: #6B7280;">✗ No</span>
+                                {% endif %}
+                            </td>
+                            <td style="padding: 1rem 0.75rem; font-size: 0.85rem; color: #6B7280;">{{ click.clicked_at|date:"M d, Y H:i" }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            {% else %}
+            <p style="text-align: center; color: #6B7280; padding: 2rem;">
+                No clicks yet. Share your affiliate links to start tracking!
+            </p>
+            {% endif %}
+        </div>
+
+    </div>
+</div>
+{% endblock %}
+
+

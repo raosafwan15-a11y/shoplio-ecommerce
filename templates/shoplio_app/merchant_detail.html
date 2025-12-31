@@ -1,0 +1,86 @@
+{% extends 'shoplio_app/base.html' %}
+{% load static %}
+{% load humanize %}
+
+{% block title %}{{ merchant.name }} - SHOPLIO{% endblock %}
+
+{% block content %}
+<!-- Merchant Header with Images -->
+<div class="merchant-header-banner">
+    <div class="container">
+        <div class="merchant-header">
+            {% if merchant.logo_url %}
+            <img src="{{ merchant.logo_url }}" alt="{{ merchant.name }}" class="merchant-logo-large">
+            {% else %}
+            <div class="merchant-logo-placeholder">{{ merchant.name|first }}</div>
+            {% endif %}
+            <div>
+                <h1>{{ merchant.name }}</h1>
+                {% if merchant.description %}
+                <p>{{ merchant.description }}</p>
+                {% endif %}
+                <div class="merchant-rating">
+                    {% with rating_int=merchant.rating|floatformat:0 %}
+                    {% for i in "12345"|make_list %}
+                    {% if forloop.counter <= rating_int|add:"0" %}
+                    <span class="star filled">★</span>
+                    {% else %}
+                    <span class="star">★</span>
+                    {% endif %}
+                    {% endfor %}
+                    {% endwith %}
+                    <span class="rating-text">{{ merchant.rating|floatformat:1 }}</span>
+                </div>
+                <a href="{{ merchant.website_url }}" target="_blank" class="btn btn-secondary">Visit Website</a>
+            </div>
+        </div>
+        <div class="merchant-images">
+            <img src="https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=250&h=150&fit=crop" alt="Western Shopping Store" loading="lazy">
+            <img src="https://images.unsplash.com/photo-1555529909-43c0d1e5d4a3?w=250&h=150&fit=crop" alt="Shopping Mall" loading="lazy">
+            <img src="https://images.unsplash.com/photo-1555529669-2269763679c0?w=250&h=150&fit=crop" alt="Retail Store" loading="lazy">
+        </div>
+    </div>
+</div>
+
+<div class="container">
+    <div class="page-header">
+        <h2>Products from {{ merchant.name }}</h2>
+        <p>Browse all products available from this merchant</p>
+    </div>
+
+    {% if product_merchants %}
+    <div class="products-grid">
+        {% for pm in product_merchants %}
+        <div class="product-card">
+            <a href="{% url 'shoplio_app:product_detail' pm.product.slug %}">
+                {% if pm.product.image_url %}
+                <img src="{{ pm.product.image_url }}" alt="{{ pm.product.name }}" class="product-image" loading="lazy" onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=400&h=300&fit=crop';">
+                {% else %}
+                <img src="https://images.unsplash.com/photo-1441986300918-64674bd600d8?w=400&h=300&fit=crop" alt="{{ pm.product.name }}" class="product-image" loading="lazy">
+                {% endif %}
+                <div class="product-info">
+                    <h3 class="product-name">{{ pm.product.name }}</h3>
+                    <div class="product-price">
+                        <span class="price">PKR {{ pm.price|floatformat:0|intcomma }}</span>
+                    </div>
+                    <a href="{% url 'shoplio_app:track_click' pm.id %}" 
+                       target="_blank" 
+                       class="btn btn-primary btn-small buy-now-btn"
+                       data-product="{{ pm.product.name }}"
+                       data-merchant="{{ pm.merchant.name }}"
+                       data-price="PKR {{ pm.price|floatformat:0|intcomma }}">
+                        Buy Now
+                    </a>
+                </div>
+            </a>
+        </div>
+        {% endfor %}
+    </div>
+    {% else %}
+    <div class="no-results">
+        <p>No products available from this merchant.</p>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}
+

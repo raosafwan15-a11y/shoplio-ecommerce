@@ -1,0 +1,317 @@
+{% extends 'shoplio_app/base.html' %}
+{% load static %}
+
+{% block title %}Become a Seller - SHOPLIO{% endblock %}
+
+{% block extra_css %}
+<style>
+.seller-register-container {
+    min-height: 80vh;
+    padding: 3rem 0;
+    background: linear-gradient(135deg, #fffbeb 0%, #fef3c7 100%);
+}
+
+.seller-register-wrapper {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 0 1rem;
+}
+
+.seller-register-card {
+    background: white;
+    border-radius: 20px;
+    box-shadow: 0 10px 40px rgba(251, 191, 36, 0.2);
+    padding: 3rem;
+    position: relative;
+    overflow: hidden;
+}
+
+.seller-register-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 5px;
+    background: linear-gradient(90deg, #fbbf24, #ffd700, #f59e0b);
+}
+
+.seller-register-header {
+    text-align: center;
+    margin-bottom: 2.5rem;
+}
+
+.seller-register-header h2 {
+    font-size: 2rem;
+    font-weight: 800;
+    background: linear-gradient(135deg, #fbbf24, #f59e0b);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 0.5rem;
+}
+
+.seller-register-subtitle {
+    color: #6b7280;
+    font-size: 1rem;
+    margin-bottom: 0.5rem;
+}
+
+.seller-benefits {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    margin-top: 1rem;
+    flex-wrap: wrap;
+}
+
+.benefit-badge {
+    background: linear-gradient(135deg, #fef3c7, #fde68a);
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    font-size: 0.875rem;
+    color: #92400e;
+    font-weight: 500;
+}
+
+.seller-form {
+    margin-top: 2rem;
+}
+
+.form-group-enhanced {
+    margin-bottom: 1.5rem;
+}
+
+.form-group-enhanced label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+    color: #1f2937;
+    font-size: 0.95rem;
+}
+
+.form-group-enhanced label .required {
+    color: #ef4444;
+}
+
+.form-control-enhanced,
+.seller-form input[type="text"],
+.seller-form input[type="tel"],
+.seller-form input[type="password"],
+.seller-form textarea,
+.seller-form input[type="email"],
+#id_username,
+#id_password1,
+#id_password2 {
+    width: 100%;
+    padding: 0.875rem 1rem;
+    border: 2px solid #e5e7eb;
+    border-radius: 10px;
+    font-size: 1rem;
+    transition: all 0.3s;
+    background: #f9fafb;
+    font-family: inherit;
+    box-sizing: border-box;
+    color: #1f2937;
+}
+
+.form-control-enhanced:focus,
+.seller-form input[type="text"]:focus,
+.seller-form input[type="tel"]:focus,
+.seller-form input[type="password"]:focus,
+.seller-form textarea:focus,
+.seller-form input[type="email"]:focus,
+#id_username:focus,
+#id_password1:focus,
+#id_password2:focus {
+    outline: none;
+    border-color: #fbbf24;
+    background: white;
+    box-shadow: 0 0 0 3px rgba(251, 191, 36, 0.1);
+}
+
+.form-control-enhanced:hover,
+.seller-form input[type="text"]:hover,
+.seller-form input[type="tel"]:hover,
+.seller-form input[type="password"]:hover,
+.seller-form textarea:hover,
+.seller-form input[type="email"]:hover,
+#id_username:hover,
+#id_password1:hover,
+#id_password2:hover {
+    border-color: #fcd34d;
+}
+
+.seller-form input::placeholder,
+.seller-form textarea::placeholder {
+    color: #9ca3af;
+}
+
+.form-help-text {
+    font-size: 0.875rem;
+    color: #6b7280;
+    margin-top: 0.25rem;
+}
+
+.form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+}
+
+.btn-seller-register {
+    width: 100%;
+    padding: 1rem;
+    background: linear-gradient(135deg, #fbbf24, #f59e0b);
+    color: white;
+    border: none;
+    border-radius: 12px;
+    font-size: 1.1rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.3s;
+    margin-top: 1.5rem;
+    box-shadow: 0 4px 15px rgba(251, 191, 36, 0.3);
+}
+
+.btn-seller-register:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(251, 191, 36, 0.4);
+}
+
+.btn-seller-register:active {
+    transform: translateY(0);
+}
+
+.seller-register-footer {
+    text-align: center;
+    margin-top: 2rem;
+    padding-top: 2rem;
+    border-top: 1px solid #e5e7eb;
+    color: #6b7280;
+}
+
+.seller-register-footer a {
+    color: #f59e0b;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.seller-register-footer a:hover {
+    text-decoration: underline;
+}
+
+.alert {
+    padding: 1rem;
+    border-radius: 8px;
+    margin-bottom: 1rem;
+}
+
+.alert-success {
+    background: #d1fae5;
+    color: #065f46;
+    border: 1px solid #6ee7b7;
+}
+
+.alert-error {
+    background: #fee2e2;
+    color: #991b1b;
+    border: 1px solid #fca5a5;
+}
+
+@media (max-width: 640px) {
+    .form-row {
+        grid-template-columns: 1fr;
+    }
+    
+    .seller-register-card {
+        padding: 2rem 1.5rem;
+    }
+}
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="seller-register-container">
+    <div class="container">
+        <div class="seller-register-wrapper">
+            <div class="seller-register-card">
+                <div class="seller-register-header">
+                    <h2>🚀 Become a Seller</h2>
+                    <p class="seller-register-subtitle">Join SHOPLIO and start selling your products</p>
+                    <div class="seller-benefits">
+                        <span class="benefit-badge">✓ Free Registration</span>
+                        <span class="benefit-badge">✓ Easy Management</span>
+                        <span class="benefit-badge">✓ Fast Approval</span>
+                    </div>
+                </div>
+                
+                {% if messages %}
+                <div class="messages">
+                    {% for message in messages %}
+                    <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+                    {% endfor %}
+                </div>
+                {% endif %}
+                
+                <form method="post" class="seller-form">
+                    {% csrf_token %}
+                    
+                    <div class="form-group-enhanced">
+                        <label for="id_username">Username <span class="required">*</span></label>
+                        <input type="text" name="username" id="id_username" required class="form-control-enhanced" placeholder="Enter your username" value="{% if form.username.value %}{{ form.username.value }}{% endif %}">
+                        {% if form.username.errors %}
+                        <div class="error">{{ form.username.errors }}</div>
+                        {% endif %}
+                        <div class="form-help-text">Choose a unique username for your seller account</div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group-enhanced">
+                            <label for="id_password1">Password <span class="required">*</span></label>
+                            <input type="password" name="password1" id="id_password1" required class="form-control-enhanced" placeholder="Enter your password">
+                            {% if form.password1.errors %}
+                            <div class="error">{{ form.password1.errors }}</div>
+                            {% endif %}
+                        </div>
+                        
+                        <div class="form-group-enhanced">
+                            <label for="id_password2">Confirm Password <span class="required">*</span></label>
+                            <input type="password" name="password2" id="id_password2" required class="form-control-enhanced" placeholder="Confirm your password">
+                            {% if form.password2.errors %}
+                            <div class="error">{{ form.password2.errors }}</div>
+                            {% endif %}
+                        </div>
+                    </div>
+                    
+                    <div class="form-group-enhanced">
+                        <label for="company_name">Company/Business Name <span class="required">*</span></label>
+                        <input type="text" name="company_name" id="company_name" required class="form-control-enhanced" placeholder="Enter your company name">
+                        <div class="form-help-text">This will be displayed to customers</div>
+                    </div>
+                    
+                    <div class="form-group-enhanced">
+                        <label for="phone">Phone Number</label>
+                        <input type="tel" name="phone" id="phone" class="form-control-enhanced" placeholder="+92 300 1234567">
+                        <div class="form-help-text">Include country code (e.g., +92 for Pakistan)</div>
+                    </div>
+                    
+                    <div class="form-group-enhanced">
+                        <label for="address">Business Address</label>
+                        <textarea name="address" id="address" rows="3" class="form-control-enhanced" placeholder="Enter your business address"></textarea>
+                        <div class="form-help-text">Full address including city and postal code</div>
+                    </div>
+                    
+                    <button type="submit" class="btn-seller-register">
+                        Create Seller Account
+                    </button>
+                </form>
+                
+                <div class="seller-register-footer">
+                    <p>Already have an account? <a href="{% url 'shoplio_app:seller_login' %}">Login here</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

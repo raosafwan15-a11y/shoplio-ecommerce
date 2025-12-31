@@ -1,0 +1,54 @@
+{% extends 'shoplio_app/base.html' %}
+{% load static %}
+{% load humanize %}
+
+{% block title %}{{ product.name }} - SHOPLIO{% endblock %}
+
+{% block content %}
+<div class="container" style="margin-top: 2rem; margin-bottom: 4rem;">
+    <div style="margin-bottom: 1rem; font-size: 0.9rem; color: #666;">
+        <a href="{% url 'shoplio_app:home' %}">Home</a> &gt;
+        <a href="{% url 'shoplio_app:category_detail' product.category.slug %}">{{ product.category.name }}</a> &gt;
+        <span>{{ product.name }}</span>
+    </div>
+
+    <div style="background: white; border-radius: 12px; padding: 2rem; box-shadow: 0 1px 3px rgba(0,0,0,0.1); display: grid; grid-template-columns: 1fr 1fr; gap: 3rem;">
+        <div style="border-radius: 12px; overflow: hidden; background: #f9f9f9; border: 1px solid #eee;">
+            {% if product.image %}
+            <img src="{{ product.image.url }}" alt="{{ product.name }}" style="width: 100%; height: auto;">
+            {% else %}
+            <img src="{% static 'images/placeholder.svg' %}" alt="No Image" style="width: 100%; height: auto;">
+            {% endif %}
+        </div>
+
+        <div>
+            <h1 style="font-size: 1.8rem; font-weight: 700; color: #1F2937; margin-bottom: 0.5rem;">{{ product.name }}</h1>
+
+            <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1.5rem; font-size: 0.9rem;">
+                <div style="display: flex; align-items: center; color: #FFD700;">
+                    <span style="font-size: 1.2rem;">★</span>
+                    <span style="color: #4B5563; margin-left: 5px; font-weight: 600;">{{ product.average_rating|floatformat:1 }}</span>
+                </div>
+                <span style="color: #E5E7EB;">|</span>
+                <span style="color: #6B7280;">{{ product.review_count }} Ratings</span>
+                <span style="color: #E5E7EB;">|</span>
+                <span style="color: #6B7280;">Brand: {{ product.brand|default:"Generic" }}</span>
+            </div>
+
+            <div style="margin-bottom: 2rem;">
+                <span style="font-size: 2rem; font-weight: 800; color: #FF6B00;">PKR {{ product.base_price|intcomma }}</span>
+            </div>
+
+            <div style="display: flex; gap: 1rem; margin-bottom: 2.5rem;">
+                <a href="{% url 'shoplio_app:checkout' product.slug %}" style="flex: 1; background: #FF6B00; color: white; text-align: center; padding: 1rem; border-radius: 8px; font-weight: 700; font-size: 1.1rem; text-decoration: none; display: block;">Buy Now</a>
+                <button style="flex: 1; background: #EFF6FF; color: #2563EB; border: 1px solid #BFDBFE; border-radius: 8px; font-weight: 600;">Add to Cart</button>
+            </div>
+
+            <div>
+                <h3 style="font-size: 1.1rem; margin-bottom: 1rem; color: #1F2937; border-bottom: 1px solid #E5E7EB; padding-bottom: 0.5rem;">Product Details</h3>
+                <p style="color: #4B5563; line-height: 1.6;">{{ product.description }}</p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,176 @@
+{% extends 'shoplio_app/base.html' %}
+{% load static %}
+{% load humanize %}
+
+{% block title %}Seller Dashboard - SHOPLIO{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="dashboard-header">
+        <h1>Seller Dashboard</h1>
+        <p>Welcome, {{ seller.company_name }}!</p>
+    </div>
+    
+    <div class="dashboard-stats">
+        <div class="stat-card">
+            <h3>{{ total_products }}</h3>
+            <p>Total Products</p>
+        </div>
+        <div class="stat-card approved">
+            <h3>{{ approved_products }}</h3>
+            <p>Approved</p>
+        </div>
+        <div class="stat-card pending">
+            <h3>{{ pending_products }}</h3>
+            <p>Pending Review</p>
+        </div>
+    </div>
+    
+    <div class="dashboard-actions">
+        <a href="{% url 'shoplio_app:seller_add_product' %}" class="btn btn-primary">Add New Product</a>
+    </div>
+    
+    <div class="products-section">
+        <h2>Your Products</h2>
+        {% if products %}
+        <div class="products-table">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Product Name</th>
+                        <th>Category</th>
+                        <th>Price</th>
+                        <th>Status</th>
+                        <th>Created</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for product in products %}
+                    <tr>
+                        <td>{{ product.name }}</td>
+                        <td>{{ product.category.name }}</td>
+                        <td>PKR {{ product.base_price|floatformat:0|intcomma }}</td>
+                        <td>
+                            {% if product.is_approved %}
+                            <span class="status-badge approved">Approved</span>
+                            {% else %}
+                            <span class="status-badge pending">Pending Review</span>
+                            {% endif %}
+                        </td>
+                        <td>{{ product.created_at|date:"M d, Y" }}</td>
+                        <td>
+                            <a href="{% url 'shoplio_app:product_detail' product.slug %}" class="btn btn-small">View</a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% else %}
+        <div class="no-products">
+            <p>You haven't added any products yet.</p>
+            <a href="{% url 'shoplio_app:seller_add_product' %}" class="btn btn-primary">Add Your First Product</a>
+        </div>
+        {% endif %}
+    </div>
+</div>
+
+<style>
+.dashboard-header {
+    margin-bottom: 2rem;
+}
+
+.dashboard-header h1 {
+    color: var(--primary-color);
+    margin-bottom: 0.5rem;
+}
+
+.dashboard-stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.stat-card {
+    background: var(--white);
+    padding: 1.5rem;
+    border-radius: 12px;
+    box-shadow: var(--shadow);
+    text-align: center;
+}
+
+.stat-card h3 {
+    font-size: 2.5rem;
+    color: var(--primary-color);
+    margin-bottom: 0.5rem;
+}
+
+.stat-card.approved h3 {
+    color: var(--success-color);
+}
+
+.stat-card.pending h3 {
+    color: var(--warning-color);
+}
+
+.dashboard-actions {
+    margin-bottom: 2rem;
+}
+
+.products-section {
+    background: var(--white);
+    padding: 2rem;
+    border-radius: 12px;
+    box-shadow: var(--shadow);
+}
+
+.products-table {
+    overflow-x: auto;
+    margin-top: 1rem;
+}
+
+.products-table table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.products-table th {
+    background: var(--bg-light);
+    padding: 1rem;
+    text-align: left;
+    font-weight: 600;
+    border-bottom: 2px solid var(--gray-lighter);
+}
+
+.products-table td {
+    padding: 1rem;
+    border-bottom: 1px solid var(--gray-lighter);
+}
+
+.status-badge {
+    padding: 0.25rem 0.75rem;
+    border-radius: 6px;
+    font-size: 0.875rem;
+    font-weight: 500;
+}
+
+.status-badge.approved {
+    background: #d1fae5;
+    color: var(--success-color);
+}
+
+.status-badge.pending {
+    background: var(--yellow-light);
+    color: var(--warning-color);
+}
+
+.no-products {
+    text-align: center;
+    padding: 3rem;
+    color: var(--gray);
+}
+</style>
+{% endblock %}
+

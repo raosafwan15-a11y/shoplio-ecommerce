@@ -1,0 +1,70 @@
+{% extends 'shoplio_app/base.html' %}
+{% load static %}
+{% load humanize %}
+
+{% block title %}{{ category.name }} - SHOPLIO{% endblock %}
+
+{% block content %}
+<!-- Category Header -->
+<div style="background: white; border-bottom: 1px solid #E5E7EB; padding: 2rem 0; margin-bottom: 2rem;">
+    <div class="container" style="display: flex; align-items: center; gap: 1.5rem;">
+        <div
+            style="width: 80px; height: 80px; border-radius: 50%; background: #F3F4F6; display: flex; align-items: center; justify-content: center; font-size: 2.5rem; overflow: hidden; border: 1px solid #E5E7EB;">
+            {% if category.image %}
+            <img src="{{ category.image.url }}" alt="{{ category.name }}"
+                style="width: 100%; height: 100%; object-fit: cover;">
+            {% else %}
+            <span>{{ category.icon }}</span>
+            {% endif %}
+        </div>
+        <div>
+            <h1 style="font-size: 2rem; font-weight: 700; color: #1F2937; margin-bottom: 0.5rem; line-height: 1;">{{
+                category.name }}</h1>
+            {% if category.description %}
+            <p style="color: #6B7280; max-width: 600px;">{{ category.description }}</p>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+<div class="container" style="margin-bottom: 4rem;">
+    <div class="section-header">
+        <h2 class="section-title">Products in {{ category.name }}</h2>
+    </div>
+
+    {% if products %}
+    <div class="products-grid">
+        {% for product in products %}
+        <a href="{% url 'shoplio_app:product_detail' product.slug %}" class="product-card">
+            <div class="product-img-wrapper">
+                {% if product.image %}
+                <img src="{{ product.image.url }}" alt="{{ product.name }}" class="product-img">
+                {% else %}
+                <img src="{% static 'images/placeholder.svg' %}" alt="No image" class="product-img">
+                {% endif %}
+            </div>
+            <div class="product-details">
+                <h3 class="product-name">{{ product.name }}</h3>
+                <div class="product-price">PKR {{ product.base_price|intcomma }}</div>
+                <div class="product-meta">
+                    {% if product.average_rating > 0 %}
+                    <span class="rating-star">★</span> {{ product.average_rating|floatformat:1 }}
+                    {% else %}
+                    <span class="text-muted">No ratings</span>
+                    {% endif %}
+                    <span>({{ product.review_count }})</span>
+                </div>
+            </div>
+        </a>
+        {% endfor %}
+    </div>
+    {% else %}
+    <div
+        style="text-align: center; padding: 4rem; background: white; border-radius: 12px; border: 1px dashed #E5E7EB; color: #6B7280;">
+        <p style="font-size: 1.1rem;">No products found in this category.</p>
+        <a href="{% url 'shoplio_app:home' %}" class="btn btn-primary"
+            style="margin-top: 1rem; display: inline-block;">Browse All Categories</a>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}
